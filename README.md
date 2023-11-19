@@ -1,5 +1,5 @@
 # id_token
-OpenID id_token validator
+Golang OpenID id_token validator
 
 ## Installation Guidelines
 
@@ -28,8 +28,15 @@ if err != nil {
 
 payload, err := validator.Validate(idToken)
 if err != nil {
-    panic(err)
+    switch err {
+    case id_token.ErrAudienceNotMatch:
+        fmt.Println("ERROR: Audience is not match")
+    case id_token.ErrTokenExpired:
+        fmt.Println("ERROR: Token was expired")
+    default:
+        fmt.Println("ERROR: Invalid token")
+    }
 }
 
-fmt.Println("id_token payload:", payload)
+fmt.Printf("id_token payload: %+v", payload)
 ```
